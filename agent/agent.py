@@ -3,7 +3,7 @@ import logging
 import psutil
 from bottle import route, run
 
-import monitoring.config as config
+import agent.config as config
 
 
 logging.basicConfig()
@@ -26,7 +26,7 @@ def collect_metrics():
             "swap": psutil.swap_memory()._asdict(),
         },
         "disk": [
-            psutil.disk_usage(part.mountpoint)._asdict()
+            {part.mountpoint: psutil.disk_usage(part.mountpoint)._asdict()}
             for part in psutil.disk_partitions()
         ],
     }
