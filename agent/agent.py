@@ -1,4 +1,5 @@
 import logging
+import argparse
 
 import psutil
 from bottle import route, run
@@ -38,5 +39,22 @@ def index():
     return collect_metrics()
 
 
+def main():
+    parser = argparse.ArgumentParser(
+        prog="Metrics Agent",
+        description="Export system metrics over http",
+        epilog="yo gurt --help",
+    )
+    parser.add_argument("--host", type=str, default="127.0.0.1")
+    parser.add_argument("-p", "--port", type=int, default=8080)
+    parser.add_argument("-q", "--quiet", action="store_true", default=False)
+
+    args = parser.parse_args()
+    logger.debug(f"Parsed Args: {args}")
+    agent_config = vars(args)
+    logger.debug(f"Running with config {agent_config}")
+    run(**agent_config)
+
+
 if __name__ == "__main__":
-    run()
+    main()
