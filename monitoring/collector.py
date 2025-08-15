@@ -71,12 +71,8 @@ class Collector:
             async with asyncio.TaskGroup() as tg:
                 for node in self.nodes:
                     tg.create_task(node._poll_node())
-        except KeyboardInterrupt:
-            pass
         except ExceptionGroup as e:
             logger.error(f"Exception caught while polling node: {e}")
-        except:
-            sys.exit(3)
 
 
 def main():
